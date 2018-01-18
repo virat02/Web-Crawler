@@ -1,0 +1,33 @@
+EXPLANATION FOR TASK 2:
+
+1) Used a my_crawl function with two parameters- first being the seed url and second being the keyword.
+
+2) Along with cleaning the urls as done in task 1, added one more parameter for cleaning, which stores the urls containing the substring "<keyword>".
+   This gives me all the urls with the keyword rain in it.
+
+3) Next, I extract the substring after "/wiki/", which basically gives the me string i am interested in.
+   (Eg: URL = "https://en.wikipedia.org/wiki/Freezing_rain"
+        String I am interested in = "Freezing_rain")
+   Using string.index(), i find the index for "/wiki" ,and i add 6 to this to get the startindex value.
+   Length of "/wiki" = 5, thereby length of "/wiki/" = 6. Since the links are cleaned in the previous steps, 
+   I will be getting links where "/wiki" always preceeds with a "/". Since we are interested in the string after "/wiki/",
+   I add 6 (i.e. the length of "/wiki/" to my startindex)
+   My end index is the length of the URL.
+   Now, i extract the substring from my startindex to my endindex to get my "required string".
+
+4) I send this required string to my "Snowball Stemmer" which finds the root word rain, if any.
+   The stemmer takes care of strings such as "ukraine", "Terrain", etc. 
+   The stemmer will output the same words for such cases and not stem it to the root "rain".
+
+5) After stemming, I check if the string I get in step 3, matches any of the regular expressions:
+   "_rain_ | _Rain_ | _rain+ | _Rain+|\^rain|\^Rain|_rain"
+   
+  The stemmer, if given say, "Tropical_cyclone_rainfall_forecasting", returns the string as it is. It does not stem such strings to the root keyword we want.
+  Hence to tackle such instances, I use the regular expression as mentioned above.
+
+6) Once it passes these criterias, I store the unique found URLs in my main "urls_crawled" array which contains the final output.
+
+7) The logic for iterating the urls remains the same as in TASK 1-E. It iterates to a depth of 6 or it stops once 1000 unique URLs are found.
+   In this case, it also stops if it does not find any more URLs to crawl, which is stored in my "queue_urls".
+
+8) I finally print the output URLs along with the number of URLs found in my out file named "RainUrlsCrawled". 
